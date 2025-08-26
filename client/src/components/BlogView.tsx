@@ -97,11 +97,10 @@ export function BlogView() {
             )}
           </CardHeader>
           <CardContent>
-            <div className="prose prose-lg max-w-none">
-              <div className="whitespace-pre-wrap text-gray-800 leading-relaxed">
-                {selectedPost.content}
-              </div>
-            </div>
+            <div 
+              className="rich-text-content prose prose-lg max-w-none"
+              dangerouslySetInnerHTML={{ __html: selectedPost.content }}
+            />
           </CardContent>
         </Card>
       </div>
@@ -215,7 +214,7 @@ export function BlogView() {
               </CardHeader>
               <CardContent>
                 <div className="text-gray-700 line-clamp-3">
-                  {post.content.slice(0, 200)}...
+                  {post.content.replace(/<[^>]*>/g, '').slice(0, 200)}...
                 </div>
                 
                 <Separator className="my-4" />

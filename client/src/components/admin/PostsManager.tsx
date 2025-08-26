@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { Label } from '@/components/ui/label';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Plus, Edit, Trash2, Calendar, User, Save, X, FileText } from 'lucide-react';
+import { RichTextEditor } from '@/components/RichTextEditor';
 import { trpc } from '@/utils/trpc';
 import type { BlogPost, Category, Tag, CreateBlogPostInput, UpdateBlogPostInput } from '../../../../server/src/schema';
 
@@ -233,16 +234,15 @@ export function PostsManager() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="content">Content *</Label>
-                <Textarea
-                  id="content"
+                <RichTextEditor
+                  label="Content"
+                  required
                   value={formData.content}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setFormData((prev: CreateBlogPostInput) => ({ ...prev, content: e.target.value }))
+                  onChange={(content: string) =>
+                    setFormData((prev: CreateBlogPostInput) => ({ ...prev, content }))
                   }
                   placeholder="Write your post content here..."
-                  rows={10}
-                  required
+                  minHeight="300px"
                 />
               </div>
 
@@ -372,7 +372,7 @@ export function PostsManager() {
                       </div>
 
                       <div className="text-sm text-gray-700 line-clamp-2">
-                        {post.content.slice(0, 150)}...
+                        {post.content.replace(/<[^>]*>/g, '').slice(0, 150)}...
                       </div>
                     </div>
 
